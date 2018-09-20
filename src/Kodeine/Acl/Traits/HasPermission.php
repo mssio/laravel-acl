@@ -34,11 +34,17 @@ trait HasPermission
     public function getPermissions()
     {
         // user permissions overridden from role.
-        $permissions = $this->permissions->lists('slug', 'name');
+        $permissions = $this->permissions->pluck('slug', 'name');
 
         // permissions based on role.
         foreach ($this->roles as $role) {
-            $permissions = array_replace_recursive($role->getPermissions(), $permissions);
+			// my dummy fixes
+			if( ! is_array($permissions) ){
+				$permissions = $permissions->toArray();
+			}
+
+			$permissions = array_replace_recursive($role->getPermissions()->toArray(), $permissions);
+            //$permissions = array_replace_recursive($role->getPermissions(), $permissions); <- original code
         }
 
         return $permissions;

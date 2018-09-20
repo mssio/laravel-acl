@@ -14,8 +14,8 @@ trait HasPermissionInheritance
 
     public function getPermissionsInherited()
     {
-        $permissions = $this->permissions->lists('slug', 'name');
-        $inherits = $this->permissions->lists('inherit_id', 'name');
+        $permissions = $this->permissions->pluck('slug', 'name');
+        $inherits = $this->permissions->pluck('inherit_id', 'name');
 
         foreach ($inherits as $name => $inherit_id) {
             if ( is_null($inherit_id) ) continue;

@@ -31,7 +31,7 @@ trait HasRole
      */
     public function getRoles()
     {
-        return is_null($this->roles) ? [] : $this->roles->lists('slug');
+        return is_null($this->roles) ? [] : $this->roles->pluck('slug');
     }
 
     /**
@@ -40,7 +40,7 @@ trait HasRole
      * @param  string $slug
      * @return bool
      */
-    public function is($slug, $operator = null)
+    public function isRole($slug, $operator = null)
     {
         $operator = is_null(null) ? $this->parseOperator($slug) : $operator;
 
@@ -220,7 +220,7 @@ trait HasRole
         if ( starts_with($method, 'is') and $method !== 'is' and ! starts_with($method, 'isWith') ) {
             $role = substr($method, 2);
 
-            return $this->is($role);
+            return $this->isRole($role);
         }
 
         // Handle canDoSomething() methods
